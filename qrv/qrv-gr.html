@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>MWI Test</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<!--<script type="text/javascript" src="jquery.sparkline.min.js"></script>-->
+
+<link href="css/layout.css" rel="stylesheet" type="text/css"></link>
+<!--[if IE]><script language="javascript" type="text/javascript" src="excanvas.min.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+
+
+<script type="text/javascript">
+
+// The idea:
+// test if predisposition of the observer may deviate the outcome
+// of some random event (where the source of randomness is derived 
+// from the quantum level)
+
+function updateText() 
+{
+	// true randomness, comes from the millisecond of the mouse click,
+	// mouse track and a pseudorandom function
+	var ms = (new Date()).getMilliseconds();
+	var num = (ms + MOUSE + Math.floor(Math.random()*42)) % 4;
+
+
+	// generate a sequence of unique values
+	// to chose the words position
+        var numUnique = 5;
+	var pos = new Array();
+	for(i = 0; i < numUnique;)
+	{
+		pos[i] = Math.floor(Math.random()*numUnique);
+		for(j = 0; j < i && pos[i] != pos[j]; j++);
+		if(i == j) i++;
+	}
+
+	var rgLeft = 20 + Math.floor(Math.random()*20)
+	for(i = 0; i < 4; i++)
+	{
+		$("#b"+i).css({top: 20 + pos[i] * 70, left: 20 + Math.floor(Math.random()*20)});
+		$("#rg"+i).css({top: 20 + pos[4] * 70, left: rgLeft});
+	}
+
+	
+	$("#rg" + C).hide();
+	C = num;
+	$("#rg" + C).show();
+	
+	// 1 - RR, 2 - GG, 3 - GR, 4 - RG
+	if(C == 0) RR++;
+	if(C == 1) GG++;
+	if(C == 2) GR++;
+	if(C == 3) RG++;
+	N++; CC+=C;
+
+	aRR[N] = [N, RR/N]; aGG[N] = [N, GG/N]; aGR[N] = [N, GR/N]; aRG[N] = [N, RG/N];
+	aRRGG[N] = [N, (RR+GG)/N]; aGRRG[N] = [N, (GR+RG)/N]; aCC[N] = [N, CC / N];
+	aERROR[N] = [N, ERROR / N]; aCORR[N] = [N, CORR / N];
+
+	// Observer dependend randomness result suggests:
+	// RR + GG > GR + RG
+	$("#num").html( 	"MOUSE = " + MOUSE
+			+	"; N = " + N
+			+	"; RR = " + RR
+			+	"; GG = " + GG
+			+	"; GR = " + GR
+			+	"; RG = " + RG
+			+	"; RR+GG = " + (RR+GG)
+			+	"; GR+RG = " + (GR+RG)
+			+	"; ERROR = " + ERROR
+			+	"; CORR = "  + CORR
+		      );
+}
+
+function percents(num) {
+	dec = 4;
+	var result = Math.round(num*Math.pow(10,dec+2))/Math.pow(10,dec);
+	return result;
+}
+
+$(document).ready(function() {	
+	C = CC = N = 0;
+	RR = GG = GR = RG = 0;
+	ERROR = 0;		// observer wrong choice RR - G, GG - R
+	CORR = 0;		// observer correlations RR - R, GG - G
+	MOUSE = 0;		// mouse track
+
+	aRR = new Array(); aGG = new Array(); aGR = new Array(); aRG = new Array();
+	aRRGG = new Array(); aGRRG = new Array(); aCC = new Array();
+	aERROR = new Array(); aCORR = new Array();
+	
+
+	updateText();
+
+	RCC = 0; RN = 1000000;
+	for(i = 0; i < RN; i++)
+	{
+		RCC += Math.floor(Math.random()*4);
+	}
+	DEV = percents(1.5 - (RCC / RN));
+	$("#num").html("RND TEST. " + RN + " NUMBERS. MEAN = " + RCC / RN + "; DEV = " + DEV + "%");
+
+	// 0 - RR, 1 - GG, 2 - GR, 3 - RG
+	$("#r").click(function () {if(C == 0) CORR++; else ERROR++; updateText(); return true;});
+	$("#g").click(function () {if(C == 1) CORR++; else ERROR++; updateText(); return true;});
+	$("#m").click(function () {if(C > 1) CORR++; else ERROR++; updateText(); return true;});
+	$().mousemove(function(e) {MOUSE += e.pageX + e.pageY;});
+
+    $("a#chart-show").click(chartShow);
+});
+
+
+
+function chartShow() 
+{
+  var d = 	[
+  				{label: "RR+GG", color: "#FFFF00", data: aRRGG}, 
+				{label: "GR+RG", color: "#A52A2A",  data: aGRRG},
+				{label: "GG", color: "#008000", data: aGG},
+				{label: "RR", color: "#FF0000", data: aRR},
+				{label: "GR", color: "#F4A480", data: aGR},
+				{label: "RG", color: "#FFDAB9",  data: aRG},
+				{label: "CORR", color: "#A0EEA0", data: aCORR},
+				{label: "ERROR", color: "#FFB6C1",  data: aERROR},
+			];
+			
+    $.plot($("#chart"), d);
+	$('#chart').show('slow');
+	return false;
+}
+
+
+</script>
+
+</head>
+<body>
+<div id="g" style="position:absolute; top:30px; left:400px; height:100px; width:400px; font-size:100px; color:green; background-color:#C0FFC0; text-align:center;"><b>GREEN</b></div>
+<div id="m" style="position:absolute; top:140px; left:400px; height:100px; width:400px; font-size:100px; color:black; background-color:#C0C0C0; text-align:center;"><b>MIX</b></div>
+<div id="r" style="position:absolute; top:250px; left:400px; height:100px; width:400px; font-size:100px; color:red; background-color:#FFC0C0; text-align:center;"><b>RED</b></div>
+<div id="rg0" style="display:none; position:absolute; font-size:65px; color:red;"><b>RED</b></div>
+<div id="rg1" style="display:none; position:absolute; font-size:65px; color:green;"><b>GREEN</b></div>
+<div id="rg2" style="display:none; position:absolute; font-size:65px; color:green; text-align:center;"><b>RED</b></div>
+<div id="rg3" style="display:none; position:absolute; font-size:65px; color:red; text-align:center;"><b>GREEN</b></div>
+
+
+
+<div id="b0" style="position:absolute; font-size:65px; color:red; text-align:center;"><b>RED</b></div>
+<div id="b1" style="position:absolute; font-size:65px; color:green; text-align:center;"><b>GREEN</b></div>
+<div id="b2" style="position:absolute; font-size:65px; color:red; text-align:center;"><b>RED</b></div>
+<div id="b3" style="position:absolute; font-size:65px; color:green; text-align:center;"><b>GREEN</b></div>
+
+<div style="position:absolute; top:400px;">
+	<div id="num"></div>
+	<a id="chart-show">Show statistics...</a>
+</div>
+
+<div id="chart" style="display:none; position:absolute; top:5px; left:5px; width:900px;height:500px; background-color:#F0F0F0;;">Chart</div>
+
+</body>
+</html>
