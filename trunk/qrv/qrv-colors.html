@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>MWI Test</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<!--<script type="text/javascript" src="jquery.sparkline.min.js"></script>-->
+
+<link href="css/layout.css" rel="stylesheet" type="text/css"></link>
+<!--[if IE]><script language="javascript" type="text/javascript" src="excanvas.min.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+
+
+<script type="text/javascript">
+
+// The idea:
+// test if predisposition of the observer may deviate the outcome
+// of some random event (where the source of randomness is derived 
+// from the quantum level)
+
+// Tests:
+//   RED/GREEN word/color
+
+// Colors:
+// GREEN, RED, BLUE, WHITE
+
+// == WORDS ==  
+// Negative:
+//  arrive, member, continued, season, added, connection, 
+//  highly, driven, do, hung, normally, held, begin, help,
+//  complex, physical, steps, often, their, area, well
+// Positive: 
+//  desire, letters, line, got, evil, inside, century, famous, 
+//  see,president, windows, it, houses, reason, nine, guys, play, 
+//  ground, pretty, third, hit, scared, a, baby, scream, world, 
+//  movie, people, sad
+// Neutral:
+//  fair, fellow, girls, bear, silent, fun
+//  husband, seriously, sight, fair, focus, catch, mental
+//  size, supposed, focus, father, earlier, mirror, rather
+//  shaking, grown, check, eating, drink, briefly
+// Misspelled:
+//  
+//
+
+// == PICTURES ==
+//
+
+
+// == SHAPES ==
+//  circle, square, triangle
+
+function timestamp()
+{
+	return parseInt(new Date().getTime().toString());
+}
+
+function updateText() 
+{
+	// true randomness, comes from the millisecond,
+	// mouse track and a pseudorandom function
+	if(timestamp() < MS) return;
+	MS = timestamp() + 250 + Math.floor(Math.random()*42);	
+	var num = (MOUSE + Math.floor(Math.random()*42)) % 4;
+
+	
+	$("#c" + C).hide();
+	C = num;
+	$("#c" + C).show();
+	
+	// 1 - R, 2 - G, 3 - B, 4 - W
+	if(C == 0) R++;
+	if(C == 1) G++;
+	if(C == 2) B++;
+	if(C == 3) W++;
+	N++; CC+=C;
+
+	aR[N] = [N, R/N]; aG[N] = [N, G/N]; aB[N] = [N, B/N]; aW[N] = [N, W/N];
+	aCC[N] = [N, CC / N]; aERROR[N] = [N, ERROR / N]; aCORR[N] = [N, CORR / N];
+
+	// Observer dependend randomness result suggests:
+	//  color preference
+	$("#num").html( 	"MOUSE = " + MOUSE
+			+	"; N = " + N
+			+	"; R = " + R
+			+	"; G = " + G
+			+	"; B = " + B
+			+	"; W = " + W
+			+	"; ERROR = " + ERROR
+			+	"; CORR = "  + CORR
+		      );
+}
+
+function percents(num) {
+	dec = 4;
+	var result = Math.round(num*Math.pow(10,dec+2))/Math.pow(10,dec);
+	return result;
+}
+
+$(document).ready(function() {	
+	C = CC = N = 0;
+	R = G = B = W = 0;
+	ERROR = 0;		// observer wrong choice R - G, G - R
+	CORR = 0;		// observer correlations R - R, G - G
+	MOUSE = 0;		// mouse track
+	MS = 0;
+	TAIL = new Array();
+
+	aR = new Array(); aG = new Array(); aB = new Array(); aW = new Array();
+	aCC = new Array(); aERROR = new Array(); aCORR = new Array();
+		
+	updateText();
+
+	RCC = 0; RN = 1000000;
+	for(i = 0; i < RN; i++)
+	{
+		RCC += Math.floor(Math.random()*4);
+	}
+	DEV = percents(1.5 - (RCC / RN));
+	$("#num").html("RND TEST. " + RN + " NUMBERS. MEAN = " + RCC / RN + "; DEV = " + DEV + "%");
+
+	// 0 - R, 1 - G, 2 - B, 3 - W
+	$("#r").click(function () {if(C == 0) CORR++; else ERROR++; updateText(); return false;});
+	$("#g").click(function () {if(C == 1) CORR++; else ERROR++; updateText(); return false;});
+	$("#b").click(function () {if(C == 2) CORR++; else ERROR++; updateText(); return false;});
+	$("#y").click(function () {if(C == 3) CORR++; else ERROR++; updateText(); return false;});
+	$().mousemove(function(e) {MOUSE += e.pageX + e.pageY;updateText();});
+    $("a#chart-show").click(chartShow);
+	
+    $.plot($("#background"), [[[]]]);
+});
+
+
+
+function chartShow() 
+{
+  var d = 	[
+				{label: "Green", color: "green", data: aG},
+				{label: "Red", color: "red", data: aR},
+				{label: "Blue", color: "blue", data: aB},
+				{label: "White", color: "white",  data: aW},
+				{label: "CORR", color: "#A0EEA0", data: aCORR},
+				{label: "ERROR", color: "#FFB6C1",  data: aERROR},
+			];
+			
+    $.plot($("#chart"), d);
+	$('#chart').show('slow');
+	return false;
+}
+
+
+</script>
+
+</head>
+<body>
+<div id="background" style="position:absolute; top:5px; left:5px; width:900px;height:500px;"></div>
+<div id="g" style="display:none; position:absolute; top:20px; left:400px; height:80px; width:400px; font-size:70px; color:green; background-color:#E0E0E0; text-align:center;"><b>GREEN</b></div>
+<div id="r" style="position:absolute; top:120px; left:400px; height:80px; width:400px; font-size:70px; color:red; background-color:#E0E0E0; text-align:center;"><b>RED</b></div>
+<div id="b" style="display:none; position:absolute; top:220px; left:400px; height:80px; width:400px; font-size:70px; color:yellow; background-color:#E0E0E0; text-align:center;"><b>BLUE</b></div>
+<div id="w" style="display:none; position:absolute; top:320px; left:400px; height:80px; width:400px; font-size:70px; color:white; background-color:#E0E0E0; text-align:center;"><b>WHITE</b></div>
+<div id="c0" style="display:none; position:absolute; top:50px; left:50px; height:300px; width:300px;  background-color:red; color:red;">RED</div>
+<div id="c1" style="display:none; position:absolute; top:50px; left:50px; height:300px; width:300px;   background-color:green; color:green;">GREEN</div>
+<div id="c2" style="display:none; position:absolute; top:50px; left:50px; height:300px; width:300px;   background-color:blue; color:blue; text-align:center;"><b>BLUE</b></div>
+<div id="c3" style="display:none; position:absolute; top:50px; left:50px; height:300px; width:300px;   background-color:white; color:white; text-align:center;"><b>WHITE</b></div>
+
+
+<div style="position:absolute; top:400px;">
+	<div id="num"></div>
+	<a id="chart-show">Show statistics...</a>
+</div>
+
+<div id="chart" style="display:none; position:absolute; top:5px; left:5px; width:900px;height:500px;">Chart</div>
+</body>
+</html>
