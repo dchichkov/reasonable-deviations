@@ -5,6 +5,7 @@
 <title>MWI Test</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <!--<script type="text/javascript" src="jquery.sparkline.min.js"></script>-->
+<!--<script type="text/javascript" src="jquery.gesture.js"></script>-->
 
 <link href="css/layout.css" rel="stylesheet" type="text/css"></link>
 <!--[if IE]><script language="javascript" type="text/javascript" src="excanvas.min.js"></script><![endif]-->
@@ -19,6 +20,8 @@
 // from the quantum level)
 
 // Tests:
+//   BIT STRINGS, lengths
+
 //   RED/GREEN word/color
 
 // Colors:
@@ -126,6 +129,9 @@ $(document).ready(function() {
 	$("#y").click(function () {if(C == 3) CORR++; else ERROR++; updateText(); return false;});
 	$().mousemove(function(e) {MOUSE += e.pageX + e.pageY;updateText();});
     $("a#chart-show").click(chartShow);
+	
+	
+	$().gesture(handler,buffer,onchange): 
 	
     $.plot($("#background"), [[[]]]);
 });
