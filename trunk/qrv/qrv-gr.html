@@ -18,13 +18,33 @@
 // of some random event (where the source of randomness is derived 
 // from the quantum level)
 
-function updateText() 
+function updateReq(){  
+	$.post("extprog",{  
+             id: 0,  
+             app: 3,  
+             n: 1,  
+           }, function(text) {  
+         
+	 rArr = text.split(',');
+	 rArr.T  = rArr.shift();
+	 rArr.IP = rArr.shift();
+	 rArr.ID = rArr.shift();
+	 rArr.APP = rArr.shift();
+	 rArr.N  = rArr.shift();
+	 // alert(rArr.length);
+	 updateText(rArr)
+       }, "text");  
+       return false;  
+     }
+
+
+function updateText(rArr) 
 {
 	// true randomness, comes from the millisecond of the mouse click,
 	// mouse track and a pseudorandom function
-	var ms = (new Date()).getMilliseconds();
-	var num = (ms + MOUSE + Math.floor(Math.random()*42)) % 4;
-
+	// var ms = (new Date()).getMilliseconds();
+	// var num = (ms + MOUSE + Math.floor(Math.random()*42)) % 4;
+	var num = rArr[0] % 4;
 
 	// generate a sequence of unique values
 	// to chose the words position
@@ -93,7 +113,7 @@ $(document).ready(function() {
 	aERROR = new Array(); aCORR = new Array();
 	
 
-	updateText();
+	updateReq();
 
 	RCC = 0; RN = 1000000;
 	for(i = 0; i < RN; i++)
@@ -104,9 +124,9 @@ $(document).ready(function() {
 	$("#num").html("RND TEST. " + RN + " NUMBERS. MEAN = " + RCC / RN + "; DEV = " + DEV + "%");
 
 	// 0 - RR, 1 - GG, 2 - GR, 3 - RG
-	$("#r").click(function () {if(C == 0) CORR++; else ERROR++; updateText(); return true;});
-	$("#g").click(function () {if(C == 1) CORR++; else ERROR++; updateText(); return true;});
-	$("#m").click(function () {if(C > 1) CORR++; else ERROR++; updateText(); return true;});
+	$("#r").click(function () {if(C == 0) CORR++; else ERROR++; updateReq(); return true;});
+	$("#g").click(function () {if(C == 1) CORR++; else ERROR++; updateReq(); return true;});
+	$("#m").click(function () {if(C > 1) CORR++; else ERROR++; updateReq(); return true;});
 	$().mousemove(function(e) {MOUSE += e.pageX + e.pageY;});
 
     $("a#chart-show").click(chartShow);

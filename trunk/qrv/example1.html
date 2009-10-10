@@ -2,9 +2,11 @@
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">  
   
  <title>Ajax with jQuery Example</title>  
- <script type="text/JavaScript" src="example1_files/jquery.js"></script>  
- <script type="text/JavaScript">
-
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" charset="utf-8">
+	google.load("jquery", "1.3.2");
+	google.setOnLoadCallback(loadComplete);
+		
     function updateReq(){  
 	$.post("extprog",{  
              id: $("#id").val(),  
@@ -25,9 +27,10 @@
      }
 
 
-   $(document).ready(function(){  
+	function loadComplete() 
+	{
      $("form#chatform").submit(updateReq);  
-   });  
+    }  
  </script>  
  <style type="text/css">  
    #messagewindow {  
