@@ -58,15 +58,35 @@ function timestamp()
 	return parseInt(new Date().getTime().toString());
 }
 
-function updateText() 
+
+
+function updateReq()
+{
+	if(timestamp() < MS) return;
+	MS = timestamp() + 250 + Math.floor(Math.random()*42);	
+	  
+	$.post("extprog", {id: 0, app: 3, n: 1, }, 
+			function(text) 
+			{  
+	 			rArr = text.split(',');
+	 			rArr.T  = rArr.shift();
+	 			rArr.IP = rArr.shift();
+	 			rArr.ID = rArr.shift();
+	 			rArr.APP = rArr.shift();
+	 			rArr.N  = rArr.shift();
+	 			// alert(rArr.length);
+	 			updateText(rArr);
+       		}, "text");  
+    return false;  
+}
+
+function updateText(rArr) 
 {
 	// true randomness, comes from the millisecond,
 	// mouse track and a pseudorandom function
-	if(timestamp() < MS) return;
-	MS = timestamp() + 250 + Math.floor(Math.random()*42);	
-	var num = (MOUSE + Math.floor(Math.random()*42)) % 4;
+	// var num = (MOUSE + Math.floor(Math.random()*42)) % 4;
+	var num = rArr[0] % 4;
 
-	
 	$("#c" + C).hide();
 	C = num;
 	$("#c" + C).show();
@@ -111,9 +131,9 @@ $(document).ready(function() {
 
 	aR = new Array(); aG = new Array(); aB = new Array(); aW = new Array();
 	aCC = new Array(); aERROR = new Array(); aCORR = new Array();
-		
-	updateText();
 
+	updateReq();
+/*
 	RCC = 0; RN = 1000000;
 	for(i = 0; i < RN; i++)
 	{
@@ -121,17 +141,17 @@ $(document).ready(function() {
 	}
 	DEV = percents(1.5 - (RCC / RN));
 	$("#num").html("RND TEST. " + RN + " NUMBERS. MEAN = " + RCC / RN + "; DEV = " + DEV + "%");
-
+*/
 	// 0 - R, 1 - G, 2 - B, 3 - W
-	$("#r").click(function () {if(C == 0) CORR++; else ERROR++; updateText(); return false;});
-	$("#g").click(function () {if(C == 1) CORR++; else ERROR++; updateText(); return false;});
-	$("#b").click(function () {if(C == 2) CORR++; else ERROR++; updateText(); return false;});
-	$("#y").click(function () {if(C == 3) CORR++; else ERROR++; updateText(); return false;});
-	$().mousemove(function(e) {MOUSE += e.pageX + e.pageY;updateText();});
+	$("#r").click(function () {if(C == 0) CORR++; else ERROR++; updateReq(); return false;});
+	$("#g").click(function () {if(C == 1) CORR++; else ERROR++; updateReq(); return false;});
+	$("#b").click(function () {if(C == 2) CORR++; else ERROR++; updateReq(); return false;});
+	$("#y").click(function () {if(C == 3) CORR++; else ERROR++; updateReq(); return false;});
+	$().mousemove(function(e) {MOUSE += e.pageX + e.pageY;updateReq();});
     $("a#chart-show").click(chartShow);
 	
 	
-	$().gesture(handler,buffer,onchange): 
+	// $().gesture(handler,buffer,onchange): 
 	
     $.plot($("#background"), [[[]]]);
 });
