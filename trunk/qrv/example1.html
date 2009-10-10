@@ -1,0 +1,53 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">  
+  
+ <title>Ajax with jQuery Example</title>  
+ <script type="text/JavaScript" src="example1_files/jquery.js"></script>  
+ <script type="text/JavaScript">
+
+    function updateReq(){  
+	$.post("extprog",{  
+             id: $("#id").val(),  
+             app: 3,  
+             n: $("#n").val(),  
+           }, function(text) {  
+         $("#msg").html("<pre>" + text + "</pre>");  
+	 rArr = text.split(',');
+	 rArr.T  = rArr.shift();
+	 rArr.IP = rArr.shift();
+	 rArr.ID = rArr.shift();
+	 rArr.APP = rArr.shift();
+	 rArr.N  = rArr.shift();
+	 // alert(rArr.length);
+	 updateReq();
+       }, "text");  
+       return false;  
+     }
+
+
+   $(document).ready(function(){  
+     $("form#chatform").submit(updateReq);  
+   });  
+ </script>  
+ <style type="text/css">  
+   #messagewindow {  
+     height: 250px;  
+     border: 1px solid;  
+     padding: 5px;  
+     overflow: auto;  
+   }  
+   #wrapper {  
+     margin: auto;  
+     width: 438px;  
+   }  
+ </style>  
+</head><body>  
+ <div id="wrapper">  
+ <p id="msg"><span id="loading">Loading...</span></p>  
+ <form id="chatform">  
+ ID: <input id="id" value="3" type="text">  
+ N: <input id="n" value="3" type="text">      
+ <input value="ok" type="submit"><br>  
+ </form>  
+ </div>  
+</body></html>
