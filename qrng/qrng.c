@@ -65,9 +65,9 @@ int main(int argc, char *argv[])
 			unsigned char byte = buffer[i] ^ genrand_int8();
 			for(j = 0; j < 8; j++)
 			{
-				unsigned char bit = (byte >> j) & 0x01;
-				C++; CC += bit;
-				if(bit) for(k = 0; k < 200; k++) sqrt(42);
+				unsigned char qbit = (byte >> j) & 0x01;
+				C++; CC += qbit;
+				if(qbit) for(k = 0; k < 200; k++) sqrt(42);
 			}
 		}
 		if(C % (bytesnum * 100000) == 0)
