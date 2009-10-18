@@ -10,26 +10,30 @@
 #endif
 
 #include "quantis.h"
+#include "mt19937.h"
+
 
 
 
 /*
-* This is an exemple tool to get random numbers via the
-* Quantis PCI card using the quantis library
+* Example RD Experiment
 */
 int main(int argc, char *argv[])
 {
-	int cardnumber = 0;
-	unsigned int bytesnum = 10000;
+	const int bytesnum = 10000;
 	int i,j,k, cnt;
 	long long CC = 0;
 	long long C = 0;
 
+    unsigned long init[4]={0x123, 0x234, 0x345, 0x456}, length=4;	// init MT19937
 	unsigned char *buffer = (unsigned char *) malloc(bytesnum);
 	if (buffer == NULL) {
 		fprintf(stderr, "bytes number too big!\n");
 		exit(EXIT_FAILURE);
 	}
+
+
+	init_by_array(init, length);		// init MT19937
 
 	cnt = quantisCount();
 
@@ -58,7 +62,7 @@ int main(int argc, char *argv[])
 
 		for(i = 0; i < bytesnum; i++)
 		{
-			unsigned char byte = buffer[i] ^ 0x55;
+			unsigned char byte = buffer[i] ^ genrand_int8();
 			for(j = 0; j < 8; j++)
 			{
 				unsigned char bit = (byte >> j) & 0x01;
@@ -67,7 +71,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		if(C % (bytesnum * 100000) == 0)
-			printf("\n%2.15Lf, %15Lf", (long double)CC/(long double)C, (long double)C);
+			printf("\n%2.15Lf, %15lld, %15lld", (long double)CC/(long double)C, C, CC);
 	}
 
 	return 0;
