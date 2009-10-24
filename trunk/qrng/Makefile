@@ -1,4 +1,4 @@
-CFLAGS += -I/opt/quantis/include
+CFLAGS += -O3 -I/opt/quantis/include
 
 all: qrng mt19937-tst
 
