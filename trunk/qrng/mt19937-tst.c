@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	long long CC = 0;
 	long long C = 0;
 
-    unsigned long init[4]={0x123, 0x234, 0x345, 0x456}, length=4;
+    unsigned long init[3]={6, 9, 42}, length=3;
     init_by_array(init, length);
 
 	while(C < NN)
