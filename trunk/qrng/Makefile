@@ -14,6 +14,13 @@ mt19937-tst.o: mt19937-tst.c
 mt19937-tst: mt19937-tst.o
 	$(CC) -o $@ mt19937-tst.o
 
+lpt-tst.o: lpt-tst.c
+	$(CC) -c $(CFLAGS) -o $@ lpt-tst.c
+
+lpt-tst: lpt-tst.o
+	$(CC) -o $@ lpt-tst.o -lparapin
+
+
 clean:
-	- rm -rf *.o *~ qrng mt19937-tst
+	- rm -rf *.o *~ qrng mt19937-tst lpt-tst
 	
