@@ -18,7 +18,7 @@ lpt-tst.o: lpt-tst.c
 	$(CC) -c $(CFLAGS) -o $@ lpt-tst.c
 
 lpt-tst: lpt-tst.o
-	$(CC) -o $@ lpt-tst.o -lparapin
+	$(CC) -o $@ lpt-tst.o
 
 
 clean:
