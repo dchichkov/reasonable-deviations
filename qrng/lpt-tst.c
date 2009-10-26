@@ -1,50 +1,26 @@
-/*  This file is part of the package "parapin".
-
-    The parapin package is free software; you can redistribute it
-    and/or modify it under the terms of the GNU Library General Public
-    License (LGPL) as published by the Free Software Foundation.
-
-    The parapin package is distributed in the hope that it will be
-    useful, but WITHOUT ANY WARRANTY; without even the implied
-    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-    See the GNU Library General Public License for more details.
-
-    You should have received a copy of the GNU Library General Public
-    License along with parapin; if not, write to the Free
-    Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-    02111-1307 USA
-
-
-    For futher information on the parapin package, please refer to the
-    project information hosted on Sourceforge --
-
-    http://sourceforge.net/projects/parapin/
-
-*/
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/io.h>
 
-#include "parapin.h"
+#define LPT1 0x378
+#define LPT2 0x278
+
+
 
 int main(int argc, char *argv[])
 {
   int i;
-  int prev = 0;
-  char buf[240];
+  time_t T0 = time(NULL);
 
-  if (pin_init_user(LPT1) < 0)
-    exit(0);
-
-  pin_output_mode(LP_DATA_PINS | LP_SWITCHABLE_PINS);
-  set_pin(LP_PIN03);
-
-  for(i = 0; i < 1000; i++)
+  ioperm(LPT1, 1, 1);	// 1 port, true
+  for(i = 0; i < 1000000; i++)
   {
-	    set_pin(LP_PIN02);
-	    clear_pin(LP_PIN02);
+	  outb(0x01, LPT1);
+	  outb(0x00, LPT1);
   }
+
+   printf("\n%d\n", (int)(time(NULL) - T0));
+
 
 }
