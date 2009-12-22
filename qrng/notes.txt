@@ -1,0 +1,19 @@
+Dec 18 2008. 
+Some description of the current data:
+* biased-data - a folder with some legacy, biased data (the QRNG bias)
+* cpuburn-1.4 - CPUBurn
+* lpt-tst.c - code for the LPT port (external heater) version
+* mt19937-tst.c - mt19937 equidistribution tests
+* qrng.c - current version of the experiment code
+
+* res-mt-q-xx.c - qrng/mt19937 experiment version. final version of the code.
+			(mt19937 is initialized from the QRNG via the table.)
+* res-mt-q-xx.txt qrng/mt19937 experiment results (some with different dump periouds)
+**  res-mt-q-01.txt - first recording. 
+			didn't stop at 3*10**12 due to the bug in the code. 
+			was manually interrupted. this manual interruption may have
+			introduced a selection bias. recording period 1024000000
+** res-mt-q-02.txt - recording period 3615752192 (bug in the code)
+** res-mt-q-03.txt - recording period 102400000000
+** res-mt-q-04.txt - recording period 1024000000
+** res-mt-q-05.txt - recording period 1024000000
