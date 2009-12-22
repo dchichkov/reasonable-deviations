@@ -106,7 +106,7 @@ void accept_request(FCGX_Request *request)
 			}
 		}
 		
-		for(i = 0; i < N; i++) data[i] = (char)rand();	// fill with 'random' data
+		// for(i = 0; i < N; i++) data[i] = (char)rand();	// fill with 'random' data
 
 		i = snprintf(result, sizeof(result) / sizeof(result[0]), "%d,%s,%d,%d,%d", (int)time(NULL), IP ? IP : "0.0.0.0", ID, APP, N);
 		for(j = 0; j < N; j++)
