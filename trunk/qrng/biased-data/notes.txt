@@ -1,0 +1,4 @@
+res-xx.txt - Experiment. QRNG xor 0x55. QRNG Bias.
+res-f-01.txt - Negative experiment. QRNG xor 0x55. QRNG Bias.
+res-mt-xx.txt - Experiment. QRNG xor MT19937, sequence 6-9-42. QRNG and badly initialized MT19937 bias?
+res-mt-neg-xx.txt - Experiment. QRNG xor MT19937, sequence 6-9-42. QRNG and badly initialized MT19937 bias?
