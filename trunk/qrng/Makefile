@@ -14,8 +14,8 @@ qrng: qrng.o
 qrng-tst: qrng-tst.o
 	$(CC) -o $@ $< $(LDFLAGS)
 
-lpt-tst: lpt-tst.o
-	$(CC) $(LDFLAGS) -o $@ $<
+mt19937-tst-init-qrng: mt19937-tst-init-qrng.o
+	$(CC) -o $@ $< $(LDFLAGS)
 
 
 clean:

@@ -21,9 +21,8 @@ int main(int argc, char *argv[])
 {
 	const int cardnumber = 0;
 	int i,j,k, cnt;
-	long long CC = 0, CCZ = 0;
-	long long SCC = 0, SC = 0, C = 0;
-	long double S = 0;
+	long long CC = 0;
+	long long C = 0;
 	time_t T0;	
 
 	unsigned long init_seed[624];				// Init MT19937
@@ -57,7 +56,7 @@ int main(int argc, char *argv[])
 	}
 	for(i = 0; i < sizeof(init_seed) / sizeof(init_seed[0]); i++) printf("0x%0lX, ", init_seed[i]);
 	printf("\n");
-    init_by_array(init_seed, sizeof(init_seed) / sizeof(init_seed[0]));
+        init_by_array(init_seed, sizeof(init_seed) / sizeof(init_seed[0]));
 
 
 	// Init byte popcount
@@ -67,26 +66,17 @@ int main(int argc, char *argv[])
 
 
 	
-	T0 = time(NULL);
-
-	while(CC < 3000000000000LL)
+	while(C < 3000000000000LL)
 	{
 		for(i = 0; i < bytesnum; i++)
 		{
-			CC += byte_popcount[genrand_int8()]; 
+			CC += byte_popcount[genrand_int8()];
 		}
 		C += bytesnum * 8;
-		if(C % bytesnum == 0)
+		if(C % (bytesnum * 1000000LL) == 0)
 		{
-			long double E = (2.0 / 2.0 / sqrt((long double)C));				long double MEAN = (long double)CC/(long double)C;
-			CCZ += MEAN > 0.5 ? 1 : -1;
-			if((S-0.5) * (MEAN-0.5) < 0.0)
-			{
-				SCC++;
-				printf("\n%lld, \t%15.2Lf, \t%lld, \t%lld", C, (long double)C/(long double)SCC, C - SC, CCZ);
-				SC = C;
-			}
-			S = MEAN;	
+			long double E = (2.0 / 2.0 / sqrt((long double)C));			
+			printf("\n%lld, %2.15Lf, %2.15Lf, %2.15Lf, %lld", C, (long double)CC/(long double)C, 0.5+E, 0.5-E, CC);
 		}
 	}
 
