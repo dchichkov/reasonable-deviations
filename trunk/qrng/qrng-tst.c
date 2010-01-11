@@ -41,20 +41,14 @@ int main(int argc, char *argv[])
 	// Init byte popcount
 	for(i = 0; i < 256; i++)
 	for(byte_popcount[i] = 0, k = 0; k < 8; k++)
-		if((i) & (1 << k)) byte_popcount[i]++;
+		if(i & (1 << k)) byte_popcount[i]++;
 
 
 	while(C < 100000000000LL)
 	{
 		if (bytesnum != (unsigned) quantisRead(cardnumber, (char *) buffer, bytesnum)){
 			fprintf(stderr, "an error occured when reading card %d\n", cardnumber);
-
-			if (quantisBoardReset(cardnumber)){
-				fprintf(stderr, "cannot reset card %d\n",cardnumber);
-				exit(EXIT_FAILURE);
-			}
-
-			continue;
+			exit(EXIT_FAILURE);
 		}
 
 		for(i = 0; i < bytesnum; i++)

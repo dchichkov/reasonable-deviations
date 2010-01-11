@@ -17,3 +17,7 @@ Some description of the current data:
 ** res-mt-q-03.txt - recording period 102400000000
 ** res-mt-q-04.txt - recording period 1024000000
 ** res-mt-q-05.txt - recording period 1024000000
+
+* res-mt-q-neg-xx.c - qrng/mt19937 experiment 'negative' version. final version of the code.
+* res-mt-q-neg-xx.txt - 'negative' (more entropy for '0') experiment results
+** res-mt-q-neg-01.txt - recording period 1024000000
