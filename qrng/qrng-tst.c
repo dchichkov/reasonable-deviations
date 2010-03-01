@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 		for(i = 0; i < bytesnum; i++)
 		{
 			CC += byte_popcount[buffer[i]];
+			// CC += __builtin_popcount(buffer[i]);
 		}
 		C += bytesnum * 8;
 		if(C % (bytesnum * 10000LL) == 0)

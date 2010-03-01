@@ -11,8 +11,7 @@ Some description of the current data:
 * res-mt-q-xx.txt qrng/mt19937 experiment results (some with different dump periouds)
 **  res-mt-q-01.txt - first recording. 
 			didn't stop at 3*10**12 due to the bug in the code. 
-			was manually interrupted. this manual interruption may have
-			introduced a selection bias. recording period 1024000000
+			was manually interrupted. recording period 1024000000
 ** res-mt-q-02.txt - recording period 3615752192 (bug in the code)
 ** res-mt-q-03.txt - recording period 102400000000
 ** res-mt-q-04.txt - recording period 1024000000
@@ -21,3 +20,24 @@ Some description of the current data:
 * res-mt-q-neg-xx.c - qrng/mt19937 experiment 'negative' version. final version of the code.
 * res-mt-q-neg-xx.txt - 'negative' (more entropy for '0') experiment results
 ** res-mt-q-neg-01.txt - recording period 1024000000
+** res-mt-q-neg-02.txt - ...
+
+
+Jan 11 2010
+* qrng-tst.c - testing the device bias (for quantis)
+* qrng-tst-01.txt, 
+* qrng-tst-02.txt - original test results
+* qrng-tst-03.txt,
+* qrng-tst-04.txt - same, but with no qrng error tolerance (no reset)
+* qrng-tst-05.txt - build with optimization disabled (-O0)
+* qrng-tst-06.txt - using __builtin_popcount() call
+
+
+Feb 08 2010
+** res-mt-q-neg-03.txt 
+** res-mt-q-neg-04.txt
+** res-mt-q-neg-05.txt - completed
+
+Adjusting the bytesnum 1024 -> 512 and recording period 5120000000, starting a new sequence
+* res-mt-q-5xx
+
