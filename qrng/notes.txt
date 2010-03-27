@@ -1,4 +1,4 @@
-Dec 18 2008. 
+Dec 18 2009. 
 Some description of the current data:
 * biased-data - a folder with some legacy, biased data (the QRNG bias)
 * cpuburn-1.4 - CPUBurn
@@ -40,4 +40,12 @@ Feb 08 2010
 
 Adjusting the bytesnum 1024 -> 512 and recording period 5120000000, starting a new sequence
 * res-mt-q-5xx
+* res-mt-q-501.txt
+* res-mt-q-502.txt
+* res-mt-q-502.txt
+
+Mar 08 2010
+Bytesnum 512, recording period 5120000000 - does not look promising. Going back to 1024/1024000000.
+
+
 
