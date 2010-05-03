@@ -45,7 +45,13 @@ Adjusting the bytesnum 1024 -> 512 and recording period 5120000000, starting a n
 * res-mt-q-502.txt
 
 Mar 08 2010
-Bytesnum 512, recording period 5120000000 - does not look promising. Going back to 1024/1024000000.
+Bytesnum 512, recording period 5120000000 - does not look promising. Going back to 1024/1024000000 (res-mt-q-xx)
 
-
+Mar-Apr 2010, same as res-mt-q-xx.c
+** res-mt-q-601.txt
+** res-mt-q-602.txt
+** res-mt-q-603.txt
+** res-mt-q-604.txt
+** res-mt-q-605.txt - incomplete, power failure
+** res-mt-q-606.txt - incomplete, accidental reboot
 
