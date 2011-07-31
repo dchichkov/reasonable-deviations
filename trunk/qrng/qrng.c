@@ -55,9 +55,9 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "an error occured when reading card %d\n", cardnumber);
 			exit(EXIT_FAILURE);
 	}
-	for(i = 0; i < sizeof(init_seed) / sizeof(init_seed[0]); i++) printf("0x%0lX, ", init_seed[i]);
-	printf("\n");
-        init_by_array(init_seed, sizeof(init_seed) / sizeof(init_seed[0]));
+	// for(i = 0; i < sizeof(init_seed) / sizeof(init_seed[0]); i++) printf("0x%0lX, ", init_seed[i]);
+	// printf("\n");
+    init_by_array(init_seed, sizeof(init_seed) / sizeof(init_seed[0]));
 
 
 	// Init byte popcount
@@ -69,16 +69,11 @@ int main(int argc, char *argv[])
 	
 	T0 = time(NULL);
 
-	while(C < 3000000000000LL)
+	while(C <  240000000LL)
 	{
 		if (bytesnum != (unsigned) quantisRead(cardnumber, (char *) buffer, bytesnum)){
 			fprintf(stderr, "an error occured when reading card %d\n", cardnumber);
-
-			if (quantisBoardReset(cardnumber)){
-				fprintf(stderr, "cannot reset card %d\n",cardnumber);
-				exit(EXIT_FAILURE);
-			}
-
+			if (quantisBoardReset(cardnumber)) {fprintf(stderr, "cannot reset card %d\n",cardnumber); exit(EXIT_FAILURE);}
 			continue;
 		}
 
@@ -86,17 +81,28 @@ int main(int argc, char *argv[])
 		{
 			int K = byte_popcount[buffer[i] ^ genrand_int8()];
 			CC += K; K <<= 7;
-			// for(k = 1024; k > K; k--) S += sqrt(42);
 			for(k = 0; k < K; k++) S += sqrt(42);
 		}
 		C += bytesnum * 8;
-		if(C % (bytesnum * 1000000LL) == 0)
-		{
-			long double E = (2.0 / 2.0 / sqrt((long double)C));			
-			printf("\n%lld, %2.15Lf, %2.15Lf, %2.15Lf, %lld, %lld, %Lf", C, (long double)CC/(long double)C, 0.5+E, 0.5-E, CC, C/(time(NULL) - T0), S);
-		}
-	}
 
+
+        if (bytesnum != (unsigned) quantisRead(cardnumber, (char *) buffer, bytesnum)){
+            fprintf(stderr, "an error occured when reading card %d\n", cardnumber);
+            if (quantisBoardReset(cardnumber)) {fprintf(stderr, "cannot reset card %d\n",cardnumber); exit(EXIT_FAILURE);}
+            continue;
+        }
+
+        for(i = 0; i < bytesnum; i++)
+        {
+            int K = byte_popcount[buffer[i] ^ genrand_int8()];
+            CC -= K; K <<= 7;
+            for(k = 8 << 7; k > K; k--) S += sqrt(42);
+        }
+        C += bytesnum * 8;
+    }
+		
+    long double E = (1.0 / sqrt((long double)C));			
+	printf("%lld, %lld, %ld, %Lf\n", C, CC, time(NULL) - T0, S);
 	return 0;
 }
 
