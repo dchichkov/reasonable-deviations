@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	
 	T0 = time(NULL);
 
-	while(C <  240000000LL)
+	while(C <  4000000LL * 60)
 	{
 		if (bytesnum != (unsigned) quantisRead(cardnumber, (char *) buffer, bytesnum)){
 			fprintf(stderr, "an error occured when reading card %d\n", cardnumber);
