@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 {
 	const int cardnumber = 0;
 	int i,j,k, cnt;
-	long long CC = 0;
+	long long CP = 0, CN = 0;
 	long long C = 0;
 	long double S = 0;
 	time_t T0;	
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	
 	T0 = time(NULL);
 
-	while(C <  4000000LL * 60 * 60 * 22)
+	while(C <  4000000LL * 60 /* 60 * 22*/)
 	{
 		if (bytesnum != (unsigned) quantisRead(cardnumber, (char *) buffer, bytesnum)){
 			fprintf(stderr, "an error occured when reading card %d\n", cardnumber);
@@ -80,11 +80,9 @@ int main(int argc, char *argv[])
 		for(i = 0; i < bytesnum; i++)
 		{
 			int K = byte_popcount[buffer[i] ^ genrand_int8()];
-			CC += K; K <<= 7;
+			CP += K; K <<= 7;
 			for(k = 0; k < K; k++) S += sqrt(42);
 		}
-		C += bytesnum * 8;
-
 
         if (bytesnum != (unsigned) quantisRead(cardnumber, (char *) buffer, bytesnum)){
             fprintf(stderr, "an error occured when reading card %d\n", cardnumber);
@@ -95,14 +93,14 @@ int main(int argc, char *argv[])
         for(i = 0; i < bytesnum; i++)
         {
             int K = byte_popcount[buffer[i] ^ genrand_int8()];
-            CC -= K; K <<= 7;
+            CN += K; K <<= 7;
             for(k = 8 << 7; k > K; k--) S += sqrt(42);
         }
+
         C += bytesnum * 8;
     }
 		
-    long double E = (1.0 / sqrt((long double)C));			
-	printf("%lld, %lld, %ld, %Lf\n", C, CC, time(NULL) - T0, S);
+	printf("%lld, %lld, %lld, %lld, %ld, %Lf\n", CP - CN, CP, CN, C, time(NULL) - T0, S);
 	return 0;
 }
 
